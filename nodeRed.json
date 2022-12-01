@@ -1,0 +1,402 @@
+[
+    {
+        "id": "1ad379a6ba9b33ea",
+        "type": "tab",
+        "label": "Reto",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3dc73f7b0f2296e8",
+        "type": "mqtt in",
+        "z": "1ad379a6ba9b33ea",
+        "name": "",
+        "topic": "/humidity",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "97ffa648e9362338",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 320,
+        "y": 300,
+        "wires": [
+            [
+                "2f5cef287069b964"
+            ]
+        ]
+    },
+    {
+        "id": "e45c60f6c879b0bb",
+        "type": "mqtt in",
+        "z": "1ad379a6ba9b33ea",
+        "name": "",
+        "topic": "/temperature",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "97ffa648e9362338",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 330,
+        "y": 360,
+        "wires": [
+            [
+                "a5012755c43c341f"
+            ]
+        ]
+    },
+    {
+        "id": "94a72f769aa8056b",
+        "type": "mqtt in",
+        "z": "1ad379a6ba9b33ea",
+        "name": "",
+        "topic": "/rain",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "97ffa648e9362338",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 310,
+        "y": 420,
+        "wires": [
+            [
+                "dcbcef3a84181520"
+            ]
+        ]
+    },
+    {
+        "id": "62ce369413cc15fe",
+        "type": "mqtt in",
+        "z": "1ad379a6ba9b33ea",
+        "name": "",
+        "topic": "/CO",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "97ffa648e9362338",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 310,
+        "y": 480,
+        "wires": [
+            [
+                "71919b46cee9ba29"
+            ]
+        ]
+    },
+    {
+        "id": "c84aaa9c2d2268d0",
+        "type": "mqtt in",
+        "z": "1ad379a6ba9b33ea",
+        "name": "",
+        "topic": "/CO2",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "97ffa648e9362338",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 310,
+        "y": 540,
+        "wires": [
+            [
+                "aba5e1ede1b8e851"
+            ]
+        ]
+    },
+    {
+        "id": "2f5cef287069b964",
+        "type": "function",
+        "z": "1ad379a6ba9b33ea",
+        "name": "Query para insertar datos de humedad en la base de datos",
+        "func": "let mac = \"48:3F:DA:44:08:FA\"\nlet d = new Date();\n\nvar hours = d.getHours() \nvar minutes = d.getMinutes() \nvar seconds = d.getSeconds() \n\nlet hora = hours + \":\" + minutes + \":\" + seconds;\nlet humedad = msg.payload;\n\nmsg.payload = [d, hora,humedad, mac];\nmsg.topic=\"INSERT INTO lecturahumedad (fecha, hora, humedad, macAddress) VALUES(?,?,?,?);\"\nreturn msg;\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 300,
+        "wires": [
+            [
+                "4966ab9e73bad09a"
+            ]
+        ]
+    },
+    {
+        "id": "a5012755c43c341f",
+        "type": "function",
+        "z": "1ad379a6ba9b33ea",
+        "name": "Query para insertar datos de temperatura en la base de datos",
+        "func": "let mac = \"48:3F:DA:44:08:FA\"\nlet d = new Date();\n\nvar hours = d.getHours()\nvar minutes = d.getMinutes()\nvar seconds = d.getSeconds()\n\nlet hora = hours + \":\" + minutes + \":\" + seconds;\nlet temperatura = msg.payload;\n\nmsg.payload = [d, hora, temperatura, mac];\nmsg.topic = \"INSERT INTO lecturatemperatura (fecha, hora, temperatura, macAddress) VALUES(?,?,?,?);\"\nreturn msg;\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 360,
+        "wires": [
+            [
+                "a542fd9f85f7e19a"
+            ]
+        ]
+    },
+    {
+        "id": "dcbcef3a84181520",
+        "type": "function",
+        "z": "1ad379a6ba9b33ea",
+        "name": "Query para insertar datos de lluvia en la base de datos",
+        "func": "let mac = \"48:3F:DA:44:08:FA\"\nlet d = new Date();\n\nvar hours = d.getHours()\nvar minutes = d.getMinutes()\nvar seconds = d.getSeconds()\n\nlet hora = hours + \":\" + minutes + \":\" + seconds;\nlet lluvia = msg.payload;\n\nmsg.payload = [d, hora, lluvia, mac];\nmsg.topic = \"INSERT INTO lecturalluvia (fecha, hora, lluvia, macAddress) VALUES(?,?,?,?);\"\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 420,
+        "wires": [
+            [
+                "8b4230c17473522a"
+            ]
+        ]
+    },
+    {
+        "id": "71919b46cee9ba29",
+        "type": "function",
+        "z": "1ad379a6ba9b33ea",
+        "name": "Query para insertar datos de CO en la base de datos",
+        "func": "let mac = \"48:3F:DA:44:08:FA\"\nlet d = new Date();\n\nvar hours = d.getHours()\nvar minutes = d.getMinutes()\nvar seconds = d.getSeconds()\n\nlet hora = hours + \":\" + minutes + \":\" + seconds;\nlet co = msg.payload;\n\nmsg.payload = [d, hora, co, mac];\nmsg.topic = \"INSERT INTO lecturaco (fecha, hora, coppm, macAddress) VALUES(?,?,?,?);\"\nreturn msg;\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 480,
+        "wires": [
+            [
+                "c19aecc6447f6f3f"
+            ]
+        ]
+    },
+    {
+        "id": "aba5e1ede1b8e851",
+        "type": "function",
+        "z": "1ad379a6ba9b33ea",
+        "name": "Query para insertar datos de CO2en la base de datos",
+        "func": "let mac = \"48:3F:DA:44:08:FA\"\nlet d = new Date();\n\nvar hours = d.getHours()\nvar minutes = d.getMinutes()\nvar seconds = d.getSeconds()\n\nlet hora = hours + \":\" + minutes + \":\" + seconds;\nlet co2 = msg.payload;\n\nmsg.payload = [d, hora, co2, mac];\nmsg.topic = \"INSERT INTO lecturaco2 (fecha, hora, co2ppm, macAddress) VALUES(?,?,?,?);\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 540,
+        "wires": [
+            [
+                "cac764a0a88f4a9e"
+            ]
+        ]
+    },
+    {
+        "id": "4966ab9e73bad09a",
+        "type": "mysql",
+        "z": "1ad379a6ba9b33ea",
+        "mydb": "17a6716e9edf92e5",
+        "name": "retodraft2",
+        "x": 1180,
+        "y": 300,
+        "wires": [
+            [
+                "de315ac936a6cd3d"
+            ]
+        ]
+    },
+    {
+        "id": "de315ac936a6cd3d",
+        "type": "debug",
+        "z": "1ad379a6ba9b33ea",
+        "name": "debug 20",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1380,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "87e6e1a1165859a0",
+        "type": "debug",
+        "z": "1ad379a6ba9b33ea",
+        "name": "debug 21",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1380,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "84acacad7b918202",
+        "type": "debug",
+        "z": "1ad379a6ba9b33ea",
+        "name": "debug 22",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1380,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "8e6b798fe8784bce",
+        "type": "debug",
+        "z": "1ad379a6ba9b33ea",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1380,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "3c1630105fce9545",
+        "type": "debug",
+        "z": "1ad379a6ba9b33ea",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1380,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a542fd9f85f7e19a",
+        "type": "mysql",
+        "z": "1ad379a6ba9b33ea",
+        "mydb": "17a6716e9edf92e5",
+        "name": "retodraft2",
+        "x": 1180,
+        "y": 360,
+        "wires": [
+            [
+                "87e6e1a1165859a0"
+            ]
+        ]
+    },
+    {
+        "id": "cac764a0a88f4a9e",
+        "type": "mysql",
+        "z": "1ad379a6ba9b33ea",
+        "mydb": "17a6716e9edf92e5",
+        "name": "retodraft2",
+        "x": 1180,
+        "y": 540,
+        "wires": [
+            [
+                "3c1630105fce9545"
+            ]
+        ]
+    },
+    {
+        "id": "c19aecc6447f6f3f",
+        "type": "mysql",
+        "z": "1ad379a6ba9b33ea",
+        "mydb": "17a6716e9edf92e5",
+        "name": "retodraft2",
+        "x": 1180,
+        "y": 480,
+        "wires": [
+            [
+                "8e6b798fe8784bce"
+            ]
+        ]
+    },
+    {
+        "id": "8b4230c17473522a",
+        "type": "mysql",
+        "z": "1ad379a6ba9b33ea",
+        "mydb": "17a6716e9edf92e5",
+        "name": "retodraft2",
+        "x": 1180,
+        "y": 420,
+        "wires": [
+            [
+                "84acacad7b918202"
+            ]
+        ]
+    },
+    {
+        "id": "97ffa648e9362338",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": "",
+        "credentials": {
+            "user": "",
+            "password": ""
+        }
+    },
+    {
+        "id": "17a6716e9edf92e5",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "10.48.77.188",
+        "port": "3306",
+        "db": "retodraft5",
+        "tz": "",
+        "charset": "UTF8",
+        "credentials": {}
+    }
+]
